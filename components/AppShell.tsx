@@ -16,6 +16,8 @@ const links = [
   { href: "/habits", label: "Habits" },
   { href: "/progress", label: "Progress" },
   { href: "/coach", label: "Coach" },
+  { href: "/gym", label: "Gym" },
+  { href: "/squad", label: "Squad" },
   { href: "/shop", label: "Shop" },
 ]
 

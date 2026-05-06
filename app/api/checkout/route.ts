@@ -21,6 +21,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unknown product" }, { status: 404 })
   }
 
+  if (product.category === "Supplements") {
+    return NextResponse.json({ error: "Unavailable" }, { status: 400 })
+  }
+
   const quantity = Math.max(1, Math.min(10, Math.floor(body.quantity ?? 1)))
   const price = getStripePriceId(product.slug)
 

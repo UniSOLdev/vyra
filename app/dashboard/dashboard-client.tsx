@@ -20,6 +20,7 @@ import {
 import type { DailyLogs, UserProfile, WorkoutPlan } from "@/lib/types"
 import { CTAButton } from "@/components/CTAButton"
 import { PageContainer } from "@/components/PageContainer"
+import { isProSubscriber } from "@/lib/vyra-pro-client"
 import { StatCard } from "@/components/StatCard"
 import { DashboardCard } from "@/components/dashboard/DashboardCard"
 import { HabitMiniList } from "@/components/dashboard/HabitMiniList"
@@ -106,6 +107,14 @@ export function DashboardClient() {
           Train clean. Live sharp. Hold the line on basics this week.
         </p>
       </header>
+
+      {isProSubscriber() ? (
+        <aside className="rounded-2xl border border-white/10 bg-zinc-900/40 px-5 py-4 text-sm text-zinc-400">
+          <span className="font-medium text-zinc-200">Pro</span> — Weekly
+          performance summaries and machine-aware programming are queued next.
+          Stay sharp.
+        </aside>
+      ) : null}
 
       <section className="glass-panel overflow-hidden rounded-3xl shadow-vyra-lg ring-1 ring-white/[0.07]">
         <div className="grid gap-10 p-7 sm:p-9 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center lg:gap-12">

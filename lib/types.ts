@@ -9,6 +9,14 @@ export type Experience = "beginner" | "intermediate" | "advanced"
 
 export type Equipment = "none" | "dumbbells" | "full_gym" | "home_gym"
 
+/** Multi-select equipment for programming and profile storage. */
+export type EquipmentKind =
+  | "full_gym"
+  | "dumbbells"
+  | "barbell"
+  | "machines"
+  | "bodyweight_only"
+
 export type NutritionPreference =
   | "no_preference"
   | "high_protein"
@@ -27,11 +35,21 @@ export interface UserProfile {
   goal: Goal
   experience: Experience
   daysPerWeek: number
+  /** Legacy single-select; superseded by equipmentKinds when set. */
   equipment: Equipment
+  /** Preferred multi-select for workout generation. */
+  equipmentKinds?: EquipmentKind[]
   nutritionPreference: NutritionPreference
   shoppingInterests: string[]
   mainStruggle: MainStruggle
   createdAt: string
+  username?: string
+  displayName?: string
+  isPro?: boolean
+  targetProteinG?: number
+  targetWaterL?: number
+  targetSteps?: number
+  planWeekStart?: string
 }
 
 export interface Exercise {
@@ -42,6 +60,8 @@ export interface Exercise {
   rest: string
   notes?: string
   completed?: boolean
+  /** When set, gates exercise in generator; otherwise name heuristics apply. */
+  equipmentTags?: EquipmentKind[]
 }
 
 export interface WorkoutDay {

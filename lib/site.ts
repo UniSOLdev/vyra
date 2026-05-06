@@ -3,4 +3,4 @@ export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://vyra.com"
 
 export const siteName = "VYRA"
-export const siteTagline = "Train clean. Live sharp."
+export const siteTagline = "Training. Fuel. Habits. One disciplined surface."

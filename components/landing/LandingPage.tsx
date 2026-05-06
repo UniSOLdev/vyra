@@ -83,7 +83,7 @@ export function LandingPage() {
             </nav>
             <div className="flex items-center gap-2 sm:gap-3">
               <Link
-                href="/dashboard"
+                href="/login"
                 className="hidden min-h-11 items-center px-3 text-sm tracking-wide text-zinc-400 transition-colors duration-200 hover:text-white md:inline-flex"
               >
                 Sign in
@@ -116,7 +116,7 @@ export function LandingPage() {
                   </Link>
                 ))}
                 <Link
-                  href="/dashboard"
+                  href="/login"
                   onClick={() => setMenu(false)}
                   className="min-h-12 rounded-xl px-4 py-3 text-sm text-zinc-500 hover:text-white"
                 >
@@ -151,18 +151,20 @@ export function LandingPage() {
                     />
                   </motion.div>
                   <h1 className="text-hero-xl relative">
-                    TRAIN CLEAN.
+                    THE PERFORMANCE
                     <br />
-                    <span className="text-vyra-lime">LIVE SHARP.</span>
+                    <span className="text-vyra-lime">OPERATING SYSTEM.</span>
                   </h1>
                 </div>
                 <p className="text-body-lg mt-8 max-w-lg sm:mt-10">
-                  Training, habits, and essentials in one system — built to
-                  execute, not administrate.
+                  Training. Fuel. Habits. One disciplined surface.
                 </p>
                 <div className="mt-10 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-4">
-                  <CTAButton href="/onboarding" variant="primary" size="lg">
-                    Start your plan
+                  <CTAButton href="/signup" variant="primary" size="lg">
+                    Create account
+                  </CTAButton>
+                  <CTAButton href="/onboarding" variant="ghost" size="lg">
+                    Run setup
                   </CTAButton>
                   <CTAButton href="/shop" variant="ghost" size="lg">
                     Explore essentials

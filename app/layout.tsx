@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 })
 
 const description =
-  "Vitality. Your routine. Aligned. Training, habits, and essentials — one disciplined surface."
+  "Training. Fuel. Habits. One disciplined surface — the performance operating system."
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

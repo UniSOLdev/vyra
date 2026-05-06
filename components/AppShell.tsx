@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { CTAButton } from "@/components/CTAButton"
 import { PageContainer } from "@/components/PageContainer"
+import { SessionControls } from "@/components/SessionControls"
 import { cn } from "@/lib/utils"
 
 const links = [
@@ -15,6 +16,8 @@ const links = [
   { href: "/nutrition", label: "Nutrition" },
   { href: "/habits", label: "Habits" },
   { href: "/progress", label: "Progress" },
+  { href: "/friends", label: "Friends" },
+  { href: "/insights", label: "Insights" },
   { href: "/coach", label: "Coach" },
   { href: "/gym", label: "Gym" },
   { href: "/squad", label: "Squad" },
@@ -56,6 +59,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <CTAButton href="/onboarding" size="default" variant="primary">
               Quick setup
             </CTAButton>
+            <SessionControls />
           </div>
           <button
             type="button"
@@ -93,6 +97,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               >
                 Quick setup
               </CTAButton>
+              <div className="mt-3 border-t border-white/10 pt-3">
+                <SessionControls />
+              </div>
             </PageContainer>
           </div>
         ) : null}

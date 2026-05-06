@@ -30,7 +30,7 @@ export function ProComingSoon() {
           Founding access
         </span>
         <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">
-          Coming soon
+          Live in app
         </span>
       </div>
       <div className="relative mt-8 grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-center">
@@ -38,12 +38,12 @@ export function ProComingSoon() {
           <p className="text-caption text-zinc-500">VYRA Pro</p>
           <h3 className="mt-4 text-section-title">Guided depth. Same discipline.</h3>
           <p className="text-body mt-5 max-w-md text-sm sm:text-base">
-            More structure when you want it — still grounded in how you train.
+            Unlimited friends, four-week insight trends, and smarter weekly adjustments — billed monthly through Stripe when enabled.
           </p>
           <div className="mt-10 flex flex-wrap items-end gap-8">
             <div className="glass-panel max-w-[14rem] rounded-3xl border border-white/12 px-6 py-6 shadow-vyra-md ring-1 ring-white/[0.06]">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                Preview price
+                Pro
               </p>
               <div className="mt-3 flex items-baseline gap-1.5">
                 <span className="font-heading text-6xl font-black tracking-tighter text-white sm:text-7xl">
@@ -52,8 +52,8 @@ export function ProComingSoon() {
                 <span className="text-sm font-medium text-zinc-500">/ mo</span>
               </div>
             </div>
-            <CTAButton href="/onboarding" variant="primary" size="lg">
-              Join waitlist
+            <CTAButton href="/insights" variant="primary" size="lg">
+              View Pro in app
             </CTAButton>
           </div>
         </div>

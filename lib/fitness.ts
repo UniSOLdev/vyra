@@ -1,4 +1,8 @@
 import { SPLIT_TEMPLATES } from "@/data/workouts"
+import {
+  exerciseAllowedForKinds,
+  resolveProfileEquipmentKinds,
+} from "@/lib/equipment"
 import type {
   DailyLogs,
   Exercise,
@@ -15,18 +19,50 @@ function cloneExercise(e: Exercise, dayId: string, index: number): Exercise {
   }
 }
 
+function filterExercisesForEquipment(
+  exercises: Exercise[],
+  kinds: ReturnType<typeof resolveProfileEquipmentKinds>
+): Exercise[] {
+  const filtered = exercises.filter((ex) =>
+    exerciseAllowedForKinds(ex.name, ex.equipmentTags, kinds)
+  )
+  if (filtered.length) return filtered
+  return [
+    {
+      id: "fallback-walk",
+      name: "Brisk walk or easy bike",
+      sets: 1,
+      reps: "25–40 min",
+      rest: "—",
+      notes: "Zone 2 pace you can repeat tomorrow.",
+      completed: false,
+      equipmentTags: ["bodyweight_only"],
+    },
+  ]
+}
+
+function maybeProgressProSets(exercises: Exercise[], isPro: boolean): Exercise[] {
+  if (!isPro || !exercises.length) return exercises
+  return exercises.map((e, i) =>
+    i === 0 ? { ...e, sets: Math.min(e.sets + 1, 6) } : e
+  )
+}
+
 export function generateWorkoutPlan(profile: UserProfile): WorkoutPlan {
   const template = SPLIT_TEMPLATES[profile.experience]
   const daysCount = Math.min(Math.max(profile.daysPerWeek, 1), 7)
   const days: WorkoutDay[] = []
+  const kinds = resolveProfileEquipmentKinds(profile)
 
   for (let i = 0; i < daysCount; i++) {
     const t = template[i % template.length]
     const dayId = `day-${i + 1}`
+    const base = filterExercisesForEquipment(t.exercises, kinds)
+    const progressed = maybeProgressProSets(base, !!profile.isPro)
     days.push({
       id: dayId,
       name: t.name,
-      exercises: t.exercises.map((ex, idx) => cloneExercise(ex, dayId, idx)),
+      exercises: progressed.map((ex, idx) => cloneExercise(ex, dayId, idx)),
       dayCompleted: false,
     })
   }

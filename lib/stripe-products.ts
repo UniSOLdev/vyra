@@ -4,6 +4,11 @@ import type { Product } from "@/lib/types"
  * Map product slugs to Stripe Price IDs.
  * These are stored in env so you can swap SKUs without code changes.
  */
+/** Returns null when Pro subscription price is not configured (checkout disabled). */
+export function getProSubscriptionPriceId(): string | null {
+  return process.env.STRIPE_PRO_PRICE_ID ?? null
+}
+
 export function getStripePriceId(slug: Product["slug"]): string {
   const map: Record<string, string | undefined> = {
     "collagen-wellness-addon": process.env.STRIPE_PRICE_ID_COLLAGEN,

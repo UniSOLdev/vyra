@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { saveOnboardingAction } from "@/app/actions/vyra"
 import type {
-  Equipment,
+  EquipmentKind,
   Experience,
   Goal,
   MainStruggle,
@@ -12,9 +13,11 @@ import type {
   UserProfile,
 } from "@/lib/types"
 import { generateWorkoutPlan } from "@/lib/fitness"
-import { saveUserProfile, saveWorkoutPlan } from "@/lib/storage"
+import { EQUIPMENT_KIND_OPTIONS } from "@/lib/equipment"
+import { weekStartMondayISO } from "@/lib/week"
 import { CTAButton } from "@/components/CTAButton"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 const steps = [
@@ -24,6 +27,7 @@ const steps = [
   "Nutrition",
   "Shopping",
   "Struggle",
+  "Username",
 ] as const
 
 const goals: { id: Goal; label: string }[] = [
@@ -38,13 +42,6 @@ const experiences: { id: Experience; label: string }[] = [
   { id: "beginner", label: "Beginner" },
   { id: "intermediate", label: "Intermediate" },
   { id: "advanced", label: "Advanced" },
-]
-
-const equipment: { id: Equipment; label: string }[] = [
-  { id: "none", label: "None" },
-  { id: "dumbbells", label: "Dumbbells" },
-  { id: "full_gym", label: "Full gym" },
-  { id: "home_gym", label: "Home gym" },
 ]
 
 const nutrition: { id: NutritionPreference; label: string }[] = [
@@ -99,17 +96,20 @@ function SelectCard({
   )
 }
 
-export function OnboardingClient() {
+export function OnboardingClient({ initialIsPro }: { initialIsPro: boolean }) {
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [goal, setGoal] = useState<Goal>("general_wellness")
   const [experience, setExperience] = useState<Experience>("beginner")
   const [daysPerWeek, setDaysPerWeek] = useState(4)
-  const [equip, setEquip] = useState<Equipment>("dumbbells")
+  const [equipKinds, setEquipKinds] = useState<EquipmentKind[]>(["dumbbells", "bodyweight_only"])
   const [nutritionPref, setNutritionPref] =
     useState<NutritionPreference>("balanced")
   const [interests, setInterests] = useState<string[]>([])
   const [struggle, setStruggle] = useState<MainStruggle>("consistency")
+  const [username, setUsername] = useState("")
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [pending, setPending] = useState(false)
 
   const progress = useMemo(
     () => Math.round(((step + 1) / steps.length) * 100),
@@ -122,24 +122,53 @@ export function OnboardingClient() {
     )
   }
 
+  const toggleEquip = (k: EquipmentKind) => {
+    setEquipKinds((prev) => {
+      const has = prev.includes(k)
+      const next = has ? prev.filter((x) => x !== k) : [...prev, k]
+      return next.length ? next : ["bodyweight_only"]
+    })
+  }
+
   const next = () => setStep((s) => Math.min(s + 1, steps.length - 1))
   const back = () => setStep((s) => Math.max(s - 1, 0))
 
-  const submit = () => {
+  const legacyEquipment = (): UserProfile["equipment"] => {
+    if (equipKinds.includes("full_gym")) return "full_gym"
+    if (equipKinds.includes("dumbbells")) return "dumbbells"
+    if (equipKinds.includes("barbell")) return "home_gym"
+    return "none"
+  }
+
+  const submit = async () => {
+    setSubmitError(null)
+    setPending(true)
     const profile: UserProfile = {
       goal,
       experience,
       daysPerWeek,
-      equipment: equip,
+      equipment: legacyEquipment(),
+      equipmentKinds: equipKinds,
       nutritionPreference: nutritionPref,
       shoppingInterests: interests.length ? interests : ["Gear"],
       mainStruggle: struggle,
       createdAt: new Date().toISOString(),
+      isPro: initialIsPro,
+      planWeekStart: weekStartMondayISO(),
     }
-    saveUserProfile(profile)
-    saveWorkoutPlan(generateWorkoutPlan(profile))
-    window.dispatchEvent(new Event("vyra-storage"))
+    const plan = generateWorkoutPlan(profile)
+    const res = await saveOnboardingAction({
+      profile,
+      username: username.trim().toLowerCase(),
+      plan,
+    })
+    if (res?.error) {
+      setSubmitError(res.error)
+      setPending(false)
+      return
+    }
     router.push("/dashboard")
+    router.refresh()
   }
 
   return (
@@ -157,10 +186,7 @@ export function OnboardingClient() {
           </span>
           <span className="tabular-nums">{progress}%</span>
         </div>
-        <div
-          className="mt-3 flex flex-wrap gap-1.5"
-          aria-label="Onboarding steps"
-        >
+        <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Onboarding steps">
           {steps.map((s, i) => (
             <span
               key={s}
@@ -240,13 +266,13 @@ export function OnboardingClient() {
               </div>
             </div>
             <div>
-              <p className="text-sm text-zinc-400">Equipment</p>
+              <p className="text-sm text-zinc-400">Equipment access (multi-select)</p>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {equipment.map((e) => (
+                {EQUIPMENT_KIND_OPTIONS.map((e) => (
                   <SelectCard
                     key={e.id}
-                    selected={equip === e.id}
-                    onClick={() => setEquip(e.id)}
+                    selected={equipKinds.includes(e.id)}
+                    onClick={() => toggleEquip(e.id)}
                   >
                     {e.label}
                   </SelectCard>
@@ -297,6 +323,22 @@ export function OnboardingClient() {
             ))}
           </div>
         )}
+
+        {step === 6 && (
+          <div className="space-y-3">
+            <p className="text-sm text-zinc-400">
+              Public handle for friend lookup. Lowercase letters, numbers, underscore. 3–20 chars.
+            </p>
+            <Input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="your_handle"
+              autoCapitalize="none"
+              className="min-h-12 border-white/10 bg-zinc-950 text-white"
+            />
+            {submitError ? <p className="text-sm text-red-400">{submitError}</p> : null}
+          </div>
+        )}
       </div>
 
       <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
@@ -318,8 +360,14 @@ export function OnboardingClient() {
             </span>
           </CTAButton>
         ) : (
-          <CTAButton type="button" variant="primary" size="lg" onClick={submit}>
-            Finish → dashboard
+          <CTAButton
+            type="button"
+            variant="primary"
+            size="lg"
+            onClick={submit}
+            disabled={pending}
+          >
+            {pending ? "Saving…" : "Finish → dashboard"}
           </CTAButton>
         )}
       </div>

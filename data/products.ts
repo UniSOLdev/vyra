@@ -8,7 +8,7 @@ export const PRODUCTS: Product[] = [
     image: "/products/oversized-tee.png",
     copy: "Minimal pump cover tee for training, errands, and everyday wear.",
     price: 34,
-    badge: "Starter Pick",
+    badge: "Member Uniform",
   },
   {
     slug: "vyra-performance-tee",
@@ -17,7 +17,7 @@ export const PRODUCTS: Product[] = [
     image: "/products/performance-tee.png",
     copy: "Lightweight training tee built for clean everyday movement.",
     price: 38,
-    badge: "Training",
+    badge: "Member Uniform",
   },
   {
     slug: "vyra-shaker-bottle",
@@ -35,7 +35,7 @@ export const PRODUCTS: Product[] = [
     image: "/products/steel-bottle.png",
     copy: "Keeps hydration simple during training and workdays.",
     price: 28,
-    badge: "Best Seller",
+    badge: "Week Staple",
   },
   {
     slug: "resistance-band-set",

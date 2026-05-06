@@ -9,6 +9,8 @@ import {
   type ShopCategory,
 } from "@/components/shop/CategoryFilter"
 import { ProductCard } from "@/components/shop/ProductCard"
+import { SupplementsEarlyAccess } from "@/components/shop/SupplementsEarlyAccess"
+import { VyraUniformSection } from "@/components/shop/VyraUniformSection"
 import { PageContainer } from "@/components/PageContainer"
 import { Input } from "@/components/ui/input"
 import type { Product } from "@/lib/types"
@@ -73,6 +75,8 @@ export function ShopClient() {
       </section>
 
       <PageContainer className="space-y-10 py-12 sm:space-y-12 md:py-16">
+        <VyraUniformSection />
+
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0 flex-1 space-y-2">
             <p className="text-caption text-zinc-500">Search</p>
@@ -131,6 +135,8 @@ export function ShopClient() {
             Nothing matches that search in this category.
           </p>
         ) : null}
+
+        {category === "Supplements" ? <SupplementsEarlyAccess /> : null}
 
         <div className="border-t border-white/[0.06] pt-10">
           <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-zinc-600">

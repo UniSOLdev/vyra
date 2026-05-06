@@ -38,7 +38,10 @@ export function ProductCard({
     window.dispatchEvent(new Event("vyra-storage"))
   }
 
+  const isSupplement = product.category === "Supplements"
+
   const buyNow = async () => {
+    if (isSupplement) return
     if (buying) return
     setBuying(true)
     try {
@@ -133,17 +136,30 @@ export function ProductCard({
             </Button>
           </div>
 
-          <CTAButton
-            type="button"
-            variant="primary"
-            size="lg"
-            disabled={buying}
-            onClick={buyNow}
-            className="w-full min-h-12 rounded-full font-semibold shadow-vyra-md"
-            title="Secure checkout"
-          >
-            {buying ? "Redirecting…" : "Add to bag"}
-          </CTAButton>
+          {isSupplement ? (
+            <CTAButton
+              type="button"
+              variant="primary"
+              size="lg"
+              disabled
+              className="w-full min-h-12 rounded-full font-semibold opacity-80 shadow-vyra-md"
+              title="Supplements launch soon"
+            >
+              Coming Soon
+            </CTAButton>
+          ) : (
+            <CTAButton
+              type="button"
+              variant="primary"
+              size="lg"
+              disabled={buying}
+              onClick={buyNow}
+              className="w-full min-h-12 rounded-full font-semibold shadow-vyra-md"
+              title="Secure checkout"
+            >
+              {buying ? "Redirecting…" : "Add to bag"}
+            </CTAButton>
+          )}
 
           <Link
             href={`/shop/${product.slug}`}

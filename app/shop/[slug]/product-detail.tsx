@@ -127,17 +127,30 @@ export function ProductDetail({ product }: { product: Product }) {
             >
               {saved ? "Saved" : "Save for later"}
             </Button>
-            <CTAButton
-              type="button"
-              variant="primary"
-              size="lg"
-              disabled={buying}
-              onClick={buyNow}
-              className="min-h-12 flex-1 rounded-full px-8 font-semibold sm:min-w-[200px]"
-              title="Secure checkout"
-            >
-              {buying ? "Redirecting…" : "Add to bag"}
-            </CTAButton>
+            {isSupplement ? (
+              <CTAButton
+                type="button"
+                variant="primary"
+                size="lg"
+                disabled
+                className="min-h-12 flex-1 rounded-full px-8 font-semibold opacity-80 sm:min-w-[200px]"
+                title="Supplements launch soon"
+              >
+                Coming Soon
+              </CTAButton>
+            ) : (
+              <CTAButton
+                type="button"
+                variant="primary"
+                size="lg"
+                disabled={buying}
+                onClick={buyNow}
+                className="min-h-12 flex-1 rounded-full px-8 font-semibold sm:min-w-[200px]"
+                title="Secure checkout"
+              >
+                {buying ? "Redirecting…" : "Add to bag"}
+              </CTAButton>
+            )}
           </div>
           <Link
             href="/shop"

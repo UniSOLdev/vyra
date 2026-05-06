@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import type { Product } from "@/lib/types"
@@ -19,7 +20,9 @@ const disclaimer =
   "VYRA provides general fitness and wellness information. It is not medical advice. Always consult a qualified professional before starting a new diet, supplement, or exercise program."
 
 export function ProductDetail({ product }: { product: Product }) {
+  const router = useRouter()
   const [saved, setSaved] = useState(false)
+  const [buying, setBuying] = useState(false)
 
   useEffect(() => {
     const sync = () => setSaved(isProductSaved(product.slug))
@@ -36,6 +39,26 @@ export function ProductDetail({ product }: { product: Product }) {
   }
 
   const isSupplement = product.category === "Supplements"
+
+  const buyNow = async () => {
+    if (buying) return
+    setBuying(true)
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ slug: product.slug, quantity: 1 }),
+      })
+      const data = (await res.json().catch(() => null)) as { url?: string } | null
+      if (data?.url) {
+        window.location.href = data.url
+        return
+      }
+      router.refresh()
+    } finally {
+      setBuying(false)
+    }
+  }
 
   return (
     <PageContainer className="py-8 sm:py-10 md:py-12">
@@ -108,11 +131,12 @@ export function ProductDetail({ product }: { product: Product }) {
               type="button"
               variant="primary"
               size="lg"
-              disabled
+              disabled={buying}
+              onClick={buyNow}
               className="min-h-12 flex-1 rounded-full px-8 font-semibold sm:min-w-[200px]"
-              title="Checkout opens at launch."
+              title="Secure checkout"
             >
-              Add to bag
+              {buying ? "Redirecting…" : "Add to bag"}
             </CTAButton>
           </div>
           <Link

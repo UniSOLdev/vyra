@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Bookmark } from "lucide-react"
 import type { Product } from "@/lib/types"
@@ -19,7 +20,9 @@ export function ProductCard({
   product: Product
   imagePriority?: boolean
 }) {
+  const router = useRouter()
   const [saved, setSaved] = useState(false)
+  const [buying, setBuying] = useState(false)
 
   useEffect(() => {
     const sync = () => setSaved(isProductSaved(product.slug))
@@ -33,6 +36,26 @@ export function ProductCard({
     else saveProduct(product.slug)
     setSaved(!saved)
     window.dispatchEvent(new Event("vyra-storage"))
+  }
+
+  const buyNow = async () => {
+    if (buying) return
+    setBuying(true)
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ slug: product.slug, quantity: 1 }),
+      })
+      const data = (await res.json().catch(() => null)) as { url?: string } | null
+      if (data?.url) {
+        window.location.href = data.url
+        return
+      }
+      router.refresh()
+    } finally {
+      setBuying(false)
+    }
   }
 
   return (
@@ -114,11 +137,12 @@ export function ProductCard({
             type="button"
             variant="primary"
             size="lg"
-            disabled
+            disabled={buying}
+            onClick={buyNow}
             className="w-full min-h-12 rounded-full font-semibold shadow-vyra-md"
-            title="Checkout opens at launch — reserve flow ships next."
+            title="Secure checkout"
           >
-            Add to bag
+            {buying ? "Redirecting…" : "Add to bag"}
           </CTAButton>
 
           <Link

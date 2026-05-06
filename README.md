@@ -1,22 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+VYRA is a premium performance MVP built with Next.js App Router.
 
 ## Getting Started
 
-First, run the development server:
+### Local dev
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Stripe + Vercel setup
+
+1) Copy env template:
+
+```bash
+cp .env.example .env.local
+```
+
+2) Fill in:
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRICE_ID_*` for each SKU in `data/products.ts`
+
+3) Run:
+
+```bash
+npm run dev
+```
+
+The shop uses **Stripe Checkout Sessions** (`POST /api/checkout`) and a signed webhook endpoint (`POST /api/stripe/webhook`).
+
+### Deploy to Vercel
+
+- Import the repo in Vercel.
+- Add the same environment variables in Vercel Project Settings.
+- Set the Stripe webhook in the Stripe dashboard to:
+  - `https://<your-domain>/api/stripe/webhook`
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

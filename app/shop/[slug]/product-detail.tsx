@@ -19,7 +19,13 @@ import { DURATION, EASE_OUT } from "@/lib/motion"
 const disclaimer =
   "VYRA provides general fitness and wellness information. It is not medical advice. Always consult a qualified professional before starting a new diet, supplement, or exercise program."
 
-export function ProductDetail({ product }: { product: Product }) {
+export function ProductDetail({
+  product,
+  checkoutAvailable,
+}: {
+  product: Product
+  checkoutAvailable: boolean
+}) {
   const router = useRouter()
   const [saved, setSaved] = useState(false)
   const [buying, setBuying] = useState(false)
@@ -39,8 +45,10 @@ export function ProductDetail({ product }: { product: Product }) {
   }
 
   const isSupplement = product.category === "Supplements"
+  const canCheckout = !isSupplement && checkoutAvailable
 
   const buyNow = async () => {
+    if (!canCheckout) return
     if (buying) return
     setBuying(true)
     try {
@@ -138,7 +146,7 @@ export function ProductDetail({ product }: { product: Product }) {
               >
                 Coming Soon
               </CTAButton>
-            ) : (
+            ) : canCheckout ? (
               <CTAButton
                 type="button"
                 variant="primary"
@@ -149,6 +157,17 @@ export function ProductDetail({ product }: { product: Product }) {
                 title="Secure checkout"
               >
                 {buying ? "Redirecting…" : "Add to bag"}
+              </CTAButton>
+            ) : (
+              <CTAButton
+                type="button"
+                variant="primary"
+                size="lg"
+                disabled
+                className="min-h-12 flex-1 rounded-full px-8 font-semibold opacity-80 sm:min-w-[200px]"
+                title="Checkout opening soon"
+              >
+                Coming soon
               </CTAButton>
             )}
           </div>

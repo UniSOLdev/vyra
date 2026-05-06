@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { AppShell } from "@/components/AppShell"
 import { getProductBySlug } from "@/data/products"
+import { isPodShopCheckoutConfigured } from "@/lib/stripe-products"
 import { ProductDetail } from "./product-detail"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -25,9 +26,11 @@ export default async function ProductPage({ params }: Props) {
   const product = getProductBySlug(slug)
   if (!product) notFound()
 
+  const checkoutAvailable = isPodShopCheckoutConfigured()
+
   return (
     <AppShell>
-      <ProductDetail product={product} />
+      <ProductDetail product={product} checkoutAvailable={checkoutAvailable} />
     </AppShell>
   )
 }

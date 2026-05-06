@@ -187,11 +187,23 @@ export function DashboardClient(props: {
 
   return (
     <PageContainer className="space-y-10 py-10 sm:space-y-12 sm:py-14 md:space-y-14 md:py-16">
+      <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-zinc-900/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+          Plan & equipment
+        </p>
+        <Link
+          href="/onboarding"
+          className="inline-flex min-h-10 items-center text-sm font-semibold text-white underline-offset-4 transition-colors hover:underline"
+        >
+          Quick setup
+        </Link>
+      </div>
+
       <header className="space-y-2">
         <p className="text-sm font-medium text-zinc-500">Welcome back.</p>
         <h1 className="text-section-title">{goalLabel[profile.goal]}</h1>
         <p className="text-body max-w-xl text-sm sm:text-base">
-          Train clean. Live sharp. Hold the line on basics this week.
+          Hold the line on basics this week.
         </p>
       </header>
 

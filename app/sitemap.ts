@@ -5,6 +5,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl
   const paths = [
     "",
+    "/about",
+    "/terms",
+    "/privacy",
+    "/contact",
+    "/login",
+    "/signup",
     "/dashboard",
     "/onboarding",
     "/workouts",
@@ -12,6 +18,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/habits",
     "/progress",
     "/coach",
+    "/friends",
+    "/insights",
+    "/gym",
+    "/squad",
     "/shop",
   ]
   return paths.map((p) => ({

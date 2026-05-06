@@ -126,8 +126,7 @@ export async function POST(req: Request) {
         })
       }
     }
-  } catch (e) {
-    console.error("stripe webhook handler error", e)
+  } catch {
     return NextResponse.json({ error: "handler_failed" }, { status: 500 })
   }
 

@@ -20,7 +20,7 @@ export function RecommendedEssentials({ products }: { products: Product[] }) {
               {p.category}
             </p>
             <p className="truncate font-medium text-white">{p.name}</p>
-            <p className="text-sm text-vyra-lime">${p.price}</p>
+            <p className="text-sm tabular-nums text-zinc-300">${p.price}</p>
           </div>
         </Link>
       ))}

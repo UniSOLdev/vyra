@@ -2,12 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { startTransition, useEffect, useState } from "react"
 import { Menu, X } from "lucide-react"
 import { Logo } from "@/components/Logo"
-import { CTAButton } from "@/components/CTAButton"
-import { PageContainer } from "@/components/PageContainer"
-import { SessionControls } from "@/components/SessionControls"
+import { HeaderAuthCluster } from "@/components/HeaderAuthCluster"
+import { SiteFooter } from "@/components/SiteFooter"
 import { cn } from "@/lib/utils"
 
 const links = [
@@ -24,87 +23,131 @@ const links = [
   { href: "/shop", label: "Shop" },
 ]
 
+function NavLink({
+  href,
+  label,
+  active,
+  onNavigate,
+}: {
+  href: string
+  label: string
+  active: boolean
+  onNavigate?: () => void
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onNavigate}
+      className={cn(
+        "shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium tracking-wide text-zinc-600 transition-colors duration-200 hover:bg-neutral-100 hover:text-zinc-900",
+        active && "bg-neutral-100 text-zinc-900"
+      )}
+    >
+      {label}
+    </Link>
+  )
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    startTransition(() => setMobileOpen(false))
+  }, [pathname])
+
+  useEffect(() => {
+    if (!mobileOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [mobileOpen])
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-50">
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/85 backdrop-blur-xl supports-[backdrop-filter]:bg-zinc-950/75">
-        <PageContainer className="flex items-center justify-between gap-3 py-3 sm:py-4">
-          <div className="flex min-w-0 items-center gap-4 lg:gap-8">
-            <Logo />
-            <nav className="hidden items-center gap-0.5 text-sm text-zinc-400 lg:flex">
+      <header className="sticky top-0 z-40 h-16 shrink-0 border-b border-neutral-200 bg-white">
+        <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-6">
+          <div className="flex min-h-0 min-w-0 flex-1 items-center gap-4 lg:gap-6">
+            <Logo variant="light" href="/" className="shrink-0" />
+            <nav
+              className="hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto lg:flex"
+              aria-label="Primary"
+            >
               {links.map((l) => (
-                <Link
+                <NavLink
                   key={l.href}
                   href={l.href}
-                  className={cn(
-                    "min-h-11 rounded-full px-3.5 py-2.5 tracking-wide transition-colors duration-200 [transition-timing-function:var(--ease-vy-out)] hover:text-white",
-                    pathname === l.href && "bg-white/[0.07] text-white"
-                  )}
-                >
-                  {l.label}
-                </Link>
+                  label={l.label}
+                  active={pathname === l.href || pathname.startsWith(`${l.href}/`)}
+                />
               ))}
             </nav>
           </div>
-          <div className="hidden items-center gap-2 sm:flex sm:gap-3">
-            <Link
-              href="/onboarding"
-              className="inline-flex min-h-11 items-center rounded-full px-3 text-sm text-zinc-400 transition-colors duration-200 hover:text-white"
+          <div className="flex shrink-0 items-center gap-2">
+            <HeaderAuthCluster />
+            <button
+              type="button"
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white text-zinc-800 transition-colors hover:bg-neutral-50 lg:hidden"
+              aria-expanded={mobileOpen}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMobileOpen((v) => !v)}
             >
-              Update plan
-            </Link>
-            <CTAButton href="/onboarding" size="default" variant="primary">
-              Quick setup
-            </CTAButton>
-            <SessionControls />
+              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
           </div>
+        </div>
+      </header>
+
+      {mobileOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
           <button
             type="button"
-            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition-colors duration-200 hover:bg-white/10 lg:hidden"
-            aria-expanded={open}
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </PageContainer>
-        {open ? (
-          <div className="border-t border-white/10 bg-zinc-950/98 backdrop-blur-xl lg:hidden">
-            <PageContainer className="flex flex-col gap-1 py-3">
+            className="absolute inset-0 bg-black/50"
+            aria-label="Close menu"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col border-l border-neutral-200 bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                Menu
+              </span>
+              <button
+                type="button"
+                className="inline-flex size-9 items-center justify-center rounded-full text-zinc-600 hover:bg-neutral-100"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+            <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3" aria-label="Mobile primary">
               {links.map((l) => (
-                <Link
+                <NavLink
                   key={l.href}
                   href={l.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "min-h-12 rounded-xl px-4 py-3 text-sm transition-colors",
-                    pathname === l.href
-                      ? "bg-white/10 text-white"
-                      : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                  )}
-                >
-                  {l.label}
-                </Link>
+                  label={l.label}
+                  active={pathname === l.href || pathname.startsWith(`${l.href}/`)}
+                  onNavigate={() => setMobileOpen(false)}
+                />
               ))}
-              <CTAButton
-                href="/onboarding"
-                className="mt-2 w-full justify-center"
-                variant="primary"
-                onClick={() => setOpen(false)}
+            </nav>
+            <div className="border-t border-neutral-200 p-3">
+              <Link
+                href="/login"
+                className="block rounded-xl px-3 py-3 text-sm font-medium text-zinc-600 hover:bg-neutral-50 hover:text-zinc-900"
+                onClick={() => setMobileOpen(false)}
               >
-                Quick setup
-              </CTAButton>
-              <div className="mt-3 border-t border-white/10 pt-3">
-                <SessionControls />
-              </div>
-            </PageContainer>
+                Sign in
+              </Link>
+            </div>
           </div>
-        ) : null}
-      </header>
+        </div>
+      ) : null}
+
       <main className="flex-1">{children}</main>
+      <SiteFooter />
     </div>
   )
 }

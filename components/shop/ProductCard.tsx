@@ -16,9 +16,11 @@ import { DURATION, EASE_OUT } from "@/lib/motion"
 export function ProductCard({
   product,
   imagePriority,
+  checkoutAvailable,
 }: {
   product: Product
   imagePriority?: boolean
+  checkoutAvailable: boolean
 }) {
   const router = useRouter()
   const [saved, setSaved] = useState(false)
@@ -39,9 +41,10 @@ export function ProductCard({
   }
 
   const isSupplement = product.category === "Supplements"
+  const canCheckout = !isSupplement && checkoutAvailable
 
   const buyNow = async () => {
-    if (isSupplement) return
+    if (!canCheckout) return
     if (buying) return
     setBuying(true)
     try {
@@ -74,7 +77,11 @@ export function ProductCard({
         "hover:shadow-[0_28px_60px_-24px_rgba(0,0,0,0.9)] hover:ring-white/[0.12]"
       )}
     >
-      <div className="relative aspect-square w-full min-h-0 shrink-0 overflow-hidden bg-[#0f0f0f]">
+      <Link
+        href={`/shop/${product.slug}`}
+        className="relative block aspect-square w-full min-h-0 shrink-0 overflow-hidden bg-[#0f0f0f] outline-none ring-offset-2 ring-offset-zinc-950 focus-visible:ring-2 focus-visible:ring-white/40"
+        aria-label={`View ${product.name}`}
+      >
         <div
           className={cn(
             "absolute inset-0 origin-center",
@@ -88,7 +95,7 @@ export function ProductCard({
             priority={imagePriority}
           />
         </div>
-      </div>
+      </Link>
 
       <div className="flex min-h-0 flex-1 flex-col gap-0 px-6 pb-6 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
         <div className="flex flex-wrap items-center gap-2">
@@ -100,9 +107,12 @@ export function ProductCard({
           </span>
         </div>
 
-        <h3 className="mt-3 font-heading text-lg font-semibold tracking-tight text-white">
+        <Link
+          href={`/shop/${product.slug}`}
+          className="mt-3 block font-heading text-lg font-semibold tracking-tight text-white transition-colors hover:text-zinc-200"
+        >
           {product.name}
-        </h3>
+        </Link>
 
         <div className="my-4 h-px bg-white/[0.06]" aria-hidden />
 
@@ -147,7 +157,7 @@ export function ProductCard({
             >
               Coming Soon
             </CTAButton>
-          ) : (
+          ) : canCheckout ? (
             <CTAButton
               type="button"
               variant="primary"
@@ -158,6 +168,17 @@ export function ProductCard({
               title="Secure checkout"
             >
               {buying ? "Redirecting…" : "Add to bag"}
+            </CTAButton>
+          ) : (
+            <CTAButton
+              type="button"
+              variant="primary"
+              size="lg"
+              disabled
+              className="w-full min-h-12 rounded-full font-semibold opacity-80 shadow-vyra-md"
+              title="Checkout opening soon"
+            >
+              Coming soon
             </CTAButton>
           )}
 

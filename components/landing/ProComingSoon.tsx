@@ -6,12 +6,10 @@ import { DURATION, EASE_OUT } from "@/lib/motion"
 import { CTAButton } from "@/components/CTAButton"
 
 const perks = [
-  "Custom AI plan",
-  "Weekly check-ins",
-  "Smart grocery list",
-  "Advanced progress insights",
-  "Exclusive product drops",
-  "Member pricing",
+  "Four-week discipline trends",
+  "Expanded friend network",
+  "Smarter weekly adjustments",
+  "Member pricing on Supply",
 ]
 
 export function ProComingSoon() {
@@ -38,7 +36,7 @@ export function ProComingSoon() {
           <p className="text-caption text-zinc-500">VYRA Pro</p>
           <h3 className="mt-4 text-section-title">Guided depth. Same discipline.</h3>
           <p className="text-body mt-5 max-w-md text-sm sm:text-base">
-            Unlimited friends, four-week insight trends, and smarter weekly adjustments — billed monthly through Stripe when enabled.
+            Unlimited friends, four-week insight trends, and smarter weekly adjustments. $9/month in app.
           </p>
           <div className="mt-10 flex flex-wrap items-end gap-8">
             <div className="glass-panel max-w-[14rem] rounded-3xl border border-white/12 px-6 py-6 shadow-vyra-md ring-1 ring-white/[0.06]">

@@ -8,13 +8,12 @@ const disclaimer =
 export function LandingFooter() {
   return (
     <footer className="border-t border-white/10 bg-black">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/12 to-transparent" />
-      <PageContainer className="py-16 md:py-24 lg:py-28">
-        <div className="flex flex-col gap-14 lg:flex-row lg:items-start lg:justify-between">
+      <PageContainer className="py-16 md:py-20 lg:py-24">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-sm space-y-4">
             <Logo />
             <p className="text-sm leading-relaxed text-zinc-500">
-              Train clean. Live sharp.
+              The performance operating system.
             </p>
             <p className="pt-2 text-xs leading-relaxed text-zinc-600">{disclaimer}</p>
           </div>
@@ -23,15 +22,15 @@ export function LandingFooter() {
               <p className="text-caption text-zinc-600">Product</p>
               <Link
                 className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
-                href="/dashboard"
+                href="/login"
               >
-                App
+                Sign in
               </Link>
               <Link
                 className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
-                href="/coach"
+                href="/signup"
               >
-                Coach
+                Create account
               </Link>
               <Link
                 className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
@@ -44,21 +43,31 @@ export function LandingFooter() {
               <p className="text-caption text-zinc-600">Company</p>
               <Link
                 className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
-                href="#about"
+                href="/about"
               >
                 About
               </Link>
               <Link
                 className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
-                href="/onboarding"
+                href="/terms"
               >
-                Start
+                Terms
+              </Link>
+              <Link
+                className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
+                href="/privacy"
+              >
+                Privacy
               </Link>
             </div>
             <div className="space-y-3 text-sm">
-              <p className="text-caption text-zinc-600">Social</p>
-              <span className="block py-2 text-zinc-600">Instagram — soon</span>
-              <span className="block py-2 text-zinc-600">YouTube — soon</span>
+              <p className="text-caption text-zinc-600">Contact</p>
+              <Link
+                className="block min-h-11 py-2 text-zinc-400 transition-colors duration-200 hover:text-white"
+                href="/contact"
+              >
+                Contact
+              </Link>
             </div>
           </div>
         </div>

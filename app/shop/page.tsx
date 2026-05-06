@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import { AppShell } from "@/components/AppShell"
+import { isPodShopCheckoutConfigured } from "@/lib/stripe-products"
 import { ShopClient } from "./shop-client"
 
 function ShopFallback() {
@@ -11,10 +12,11 @@ function ShopFallback() {
 }
 
 export default function ShopPage() {
+  const checkoutAvailable = isPodShopCheckoutConfigured()
   return (
     <AppShell>
       <Suspense fallback={<ShopFallback />}>
-        <ShopClient />
+        <ShopClient checkoutAvailable={checkoutAvailable} />
       </Suspense>
     </AppShell>
   )

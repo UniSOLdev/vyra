@@ -27,9 +27,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json(
-      { error: "Early access is unavailable until Supabase env vars are set." },
-      { status: 503 }
-    )
+    return NextResponse.json({ error: "Waitlist unavailable" }, { status: 503 })
   }
 }

@@ -29,7 +29,11 @@ function sortProducts(list: Product[], sort: ShopSort): Product[] {
   return next
 }
 
-export function ShopClient() {
+export function ShopClient({
+  checkoutAvailable,
+}: {
+  checkoutAvailable: boolean
+}) {
   const search = useSearchParams()
   const initial = (search.get("category") as ShopCategory | null) ?? "All"
 
@@ -69,7 +73,7 @@ export function ShopClient() {
             Essentials for training days.
           </h1>
           <p className="text-body mt-6 max-w-2xl text-sm sm:text-base">
-            Curated gear and staples — save what you want until checkout opens.
+            Uniform, bottles, and gear — built for repeat training weeks.
           </p>
         </PageContainer>
       </section>
@@ -126,6 +130,7 @@ export function ShopClient() {
               key={p.slug}
               product={p}
               imagePriority={i < 6}
+              checkoutAvailable={checkoutAvailable}
             />
           ))}
         </div>

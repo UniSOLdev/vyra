@@ -22,7 +22,7 @@ const nav = [
   { href: "/coach", label: "Coach" },
   { href: "/shop", label: "Shop" },
   { href: "/shop?category=Supplements", label: "Supplements" },
-  { href: "#about", label: "About" },
+  { href: "/about", label: "About" },
 ]
 
 const aboutBullets = [
@@ -150,10 +150,8 @@ export function LandingPage() {
                       transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                     />
                   </motion.div>
-                  <h1 className="text-hero-xl relative">
-                    THE PERFORMANCE
-                    <br />
-                    <span className="text-vyra-lime">OPERATING SYSTEM.</span>
+                  <h1 className="text-hero-xl relative text-white">
+                    The performance operating system.
                   </h1>
                 </div>
                 <p className="text-body-lg mt-8 max-w-lg sm:mt-10">
@@ -163,11 +161,11 @@ export function LandingPage() {
                   <CTAButton href="/signup" variant="primary" size="lg">
                     Create account
                   </CTAButton>
-                  <CTAButton href="/onboarding" variant="ghost" size="lg">
-                    Run setup
+                  <CTAButton href="/login" variant="outline" size="lg">
+                    Sign in
                   </CTAButton>
                   <CTAButton href="/shop" variant="ghost" size="lg">
-                    Explore essentials
+                    Shop essentials
                   </CTAButton>
                 </div>
                 <div className="mt-14 sm:mt-16">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { Bell, ChevronDown } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { signOutAction } from "@/app/actions/vyra"
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,7 @@ function initialsFromEmail(email: string) {
   return part.slice(0, 1).toUpperCase()
 }
 
-export function HeaderAuthCluster() {
+export function TopBarAuth() {
   const [user, setUser] = useState<{ email: string } | null>(null)
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -44,18 +44,6 @@ export function HeaderAuthCluster() {
 
   return (
     <div ref={rootRef} className="flex shrink-0 items-center gap-2">
-      <button
-        type="button"
-        className={cn(
-          "inline-flex size-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-zinc-500 transition-colors hover:bg-neutral-50 hover:text-zinc-800",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
-        )}
-        aria-label="Notifications"
-        title="Notifications"
-      >
-        <Bell className="size-4" aria-hidden />
-      </button>
-
       {user ? (
         <div className="relative">
           <button
@@ -77,7 +65,7 @@ export function HeaderAuthCluster() {
           {open ? (
             <div
               role="menu"
-              className="absolute right-0 z-50 mt-2 w-48 rounded-xl border border-neutral-200 bg-white py-1 shadow-lg ring-1 ring-black/5"
+              className="absolute right-0 z-[70] mt-2 w-48 rounded-xl border border-neutral-200 bg-white py-1 shadow-lg ring-1 ring-black/5"
             >
               <Link
                 role="menuitem"
@@ -108,10 +96,10 @@ export function HeaderAuthCluster() {
           ) : null}
         </div>
       ) : (
-        <div className="flex items-center gap-2">
+        <div className="flex max-w-[calc(100vw-8rem)] items-center gap-1.5 sm:gap-2">
           <Link
             href="/login"
-            className="hidden min-h-9 items-center rounded-full px-3 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 sm:inline-flex"
+            className="inline-flex min-h-9 shrink-0 items-center rounded-full px-2.5 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 sm:px-3"
           >
             Sign in
           </Link>

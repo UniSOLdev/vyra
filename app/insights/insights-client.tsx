@@ -51,9 +51,7 @@ export function InsightsClient({
               Upgrade to Pro
             </CTAButton>
             {checkoutError ? (
-              <p className="text-sm text-zinc-500">
-                Checkout is temporarily unavailable. Try again.
-              </p>
+              <p className="text-sm text-zinc-500">Unable to start checkout. Try again in a moment.</p>
             ) : null}
           </>
         ) : (

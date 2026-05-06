@@ -142,9 +142,9 @@ export function ProductDetail({
                 size="lg"
                 disabled
                 className="min-h-12 flex-1 rounded-full px-8 font-semibold opacity-80 sm:min-w-[200px]"
-                title="Supplements launch soon"
+                title="Supplements coming soon"
               >
-                Coming Soon
+                Coming soon
               </CTAButton>
             ) : canCheckout ? (
               <CTAButton

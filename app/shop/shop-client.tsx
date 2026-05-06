@@ -149,8 +149,8 @@ export function ShopClient({
           </p>
           <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-zinc-500">
             Fast fulfillment where possible · 30-day returns on qualified orders
-            · Secure checkout at launch · Premium-quality staples we stand
-            behind — final policy details ship with the storefront.
+            · Secure checkout · Premium-quality staples we stand behind — policy
+            details are provided at purchase.
           </p>
         </div>
       </PageContainer>

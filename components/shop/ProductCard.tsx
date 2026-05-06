@@ -153,9 +153,9 @@ export function ProductCard({
               size="lg"
               disabled
               className="w-full min-h-12 rounded-full font-semibold opacity-80 shadow-vyra-md"
-              title="Supplements launch soon"
+              title="Supplements coming soon"
             >
-              Coming Soon
+              Coming soon
             </CTAButton>
           ) : canCheckout ? (
             <CTAButton
